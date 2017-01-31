@@ -1,0 +1,20 @@
+.ipynb_checkpoints/*
+metadata/*
+data/*
+*.pyc
+*.mat
+*.npy
+*.tgz
+*.zip
+*.tar.gz
+
+# generated images
+im/*
+*.png
+
+#jetbrains
+*.idea
+
+# numpy data
+*.npy
+*.npz
