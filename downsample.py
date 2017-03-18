@@ -13,6 +13,8 @@ import glob
 import time 
 from tqdm import tqdm
 
+import pandas.tools.plotting
+
 #-----------------------------------------------------
 def load_scan(path):
     """ Load the scans in a given folder path
