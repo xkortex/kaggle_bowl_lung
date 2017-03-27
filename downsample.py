@@ -6,7 +6,7 @@
 import numpy as np 
 import dicom
 import SimpleITK as sitk
-import os
+import os, sys
 import scipy.ndimage
 import glob
 
@@ -128,14 +128,11 @@ def file_to_array(filepath, newSpacing=(1, 1, 1), verbose=False):
     return pix_resampled, spacing
 
 
-
-#-----------------------------------------------------
-
-if __name__ == '__main__':
-    # wd = '/gpfs/scratch/delton17'
-    wd = '/media/mike/tera/data/databowl/'
+def process_downsample(subset):
+    drive = 'tris'
+    wd = '/media/mike/{}/data/bowl17/'.format(drive)
     # input_folder = wd+'/kgsamples/' # '/CTscans/'
-    input_folder = wd+'/luna/subset0/'
+    input_folder = wd + '/luna/subset{}/'.format(subset)
     resampled_folder = wd + '/resampled_images/'
     downsampled_folder = wd + '/downsampled_images/'
 
@@ -149,14 +146,14 @@ if __name__ == '__main__':
     patients.sort()
 
     t1 = time.time()
-    print(patients)
-    for i in tqdm(range(0,len(patients))):
+    print(input_folder)
+    print('# of samples: ', len(patients))
+    for i in tqdm(range(0, len(patients))):
         # patient = load_scan(input_folder + patients[i])
         # patient_pixels = get_pixels_hu(patient)
         # pix_resampled, spacing = resample(patient_pixels, patient, [1,1,1])
         pix_resampled, spacing = file_to_array(input_folder + patients[i], verbose=True)
         if pix_resampled is not None:
-
             np.save(resampled_folder + patients[i], pix_resampled)
 
             # ratio = 0.5
@@ -168,5 +165,19 @@ if __name__ == '__main__':
             # downsampled = scipy.ndimage.interpolation.zoom(pix_resampled, [ratio, ratio, ratio])
             # np.save(downsampled_folder + patients[i] + "_.25", downsampled)
 
-        # print("done with %1i" % i)
+            # print("done with %1i" % i)
+
+#-----------------------------------------------------
+
+if __name__ == '__main__':
+    # wd = '/gpfs/scratch/delton17'
+    # try:
+    #     ss = int(sys.argv[1])
+    # except:
+    #     raise ValueError('Invalid command line argument specified')
+
+    for i in tqdm([2,3,4,5,6,7,8,9]):
+        process_downsample(i)
+
+
 
