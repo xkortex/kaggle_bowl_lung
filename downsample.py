@@ -129,7 +129,7 @@ def file_to_array(filepath, newSpacing=(1, 1, 1), verbose=False):
 
 
 def process_downsample(subset):
-    drive = 'tris'
+    drive = 'tera'
     wd = '/media/mike/{}/data/bowl17/'.format(drive)
     # input_folder = wd+'/kgsamples/' # '/CTscans/'
     input_folder = wd + '/luna/subset{}/'.format(subset)
@@ -152,20 +152,23 @@ def process_downsample(subset):
         # patient = load_scan(input_folder + patients[i])
         # patient_pixels = get_pixels_hu(patient)
         # pix_resampled, spacing = resample(patient_pixels, patient, [1,1,1])
-        pix_resampled, spacing = file_to_array(input_folder + patients[i], verbose=True)
-        if pix_resampled is not None:
-            np.save(resampled_folder + patients[i], pix_resampled)
+        if not os.path.exists(resampled_folder + patients[i] + '.npy'):
+            pix_resampled, spacing = file_to_array(input_folder + patients[i], verbose=True)
+            if pix_resampled is not None:
+                np.save(resampled_folder + patients[i], pix_resampled)
 
-            # ratio = 0.5
-            # downsampled = scipy.ndimage.interpolation.zoom(pix_resampled, [ratio, ratio, ratio])
-            # np.save(downsampled_folder + patients[i] + "_.5", downsampled)
-            #
-            #
-            # ratio = 0.25
-            # downsampled = scipy.ndimage.interpolation.zoom(pix_resampled, [ratio, ratio, ratio])
-            # np.save(downsampled_folder + patients[i] + "_.25", downsampled)
+                # ratio = 0.5
+                # downsampled = scipy.ndimage.interpolation.zoom(pix_resampled, [ratio, ratio, ratio])
+                # np.save(downsampled_folder + patients[i] + "_.5", downsampled)
+                #
+                #
+                # ratio = 0.25
+                # downsampled = scipy.ndimage.interpolation.zoom(pix_resampled, [ratio, ratio, ratio])
+                # np.save(downsampled_folder + patients[i] + "_.25", downsampled)
 
-            # print("done with %1i" % i)
+                # print("done with %1i" % i)
+        else:
+            print('skip')
 
 #-----------------------------------------------------
 
@@ -176,7 +179,7 @@ if __name__ == '__main__':
     # except:
     #     raise ValueError('Invalid command line argument specified')
 
-    for i in tqdm([2,3,4,5,6,7,8,9]):
+    for i in [0,1]:
         process_downsample(i)
 
 
